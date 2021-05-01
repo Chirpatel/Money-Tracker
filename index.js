@@ -16,9 +16,9 @@ app.use("/api/crypto", require("./routes/cryptoAPI"));
 app.use("/data/crypto", require("./routes/cryptoDatabase"));
 
 
-// app.set('port', process.env.PORT || 3000);
-// console.log("Express server listening on port " + app.get('port'));
-// app.listen(app.get('port'));
+app.set('port', process.env.PORT || 3000);
+console.log("Express server listening on port " + app.get('port'));
+app.listen(app.get('port'));
 
 
 module.exports = app;

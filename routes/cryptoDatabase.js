@@ -2,6 +2,8 @@ const express  = require('express');
 const {Router} = express;
 const router = Router();
 const Crypto = require('../module/crypto');
+const axios = require('axios');
+const getName = async (url) => {return await axios.get(url)}
 
 router.get('/',async (req,res) =>{
     try{
@@ -21,7 +23,8 @@ router.get('/',async (req,res) =>{
 
 
 router.get('/add',async (req,res) =>{
-    let {coinName,date, name, amount, quantity, transactionType} = req.query;
+    let {coinName,date, amount, quantity, transactionType} = req.query;
+    let name = (await getName("https://moneytracker.vercel.chir.in/api/crypto/id?symbol="+coinName)).data[0].id;
     try{
         let cryptodata= new Crypto({
             coinName,
@@ -45,7 +48,8 @@ router.get('/add',async (req,res) =>{
 })
 
 router.get('/update',async (req,res) =>{
-    let {_id,coinName,date, name, amount, quantity, transactionType} = req.query;
+    let {_id,coinName,date, amount, quantity, transactionType} = req.query;
+    let name = (await getName("https://moneytracker.vercel.chir.in/api/crypto/id?symbol="+coinName)).data[0].id;
     try{
         let cryptodata = await Crypto.updateOne({_id:_id},{$set:{coinName:coinName,date:date,name:name,amount:amount,quantity:quantity,transactionType:transactionType}})
         if(cryptodata){
