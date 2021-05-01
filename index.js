@@ -12,7 +12,7 @@ app.get("/", function(req, res, next) {
 /*Crypto Price API */
 app.use("/api/crypto", require("./routes/cryptoAPI"));
 
-/*Crypto data add */
+/*Crypto data */
 app.use("/data/crypto", require("./routes/cryptoDatabase"));
 
 
