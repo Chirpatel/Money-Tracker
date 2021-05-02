@@ -4,11 +4,7 @@ const app = express();
 const cors = require("cors")
 connectDB();
 
-const corsOptionsDelegate = (req, callback) => {
-  callback(null, { origin: true })
-}
-
-app.use(cors(corsOptionsDelegate));
+app.use(cors({credentials: true, origin: true}));
 
 app.use(express.json({ extend: false }));
 app.get("/", function(req, res, next) {
