@@ -23,7 +23,7 @@ router.get('/',async (req,res) =>{
 
 
 router.get('/add',async (req,res) =>{
-    let {coinName,date, amount, quantity, transactionType} = req.query;
+    let {coinName,date, amount, quantity,currency, transactionType} = req.query;
     let name = (await getName("https://moneytracker.vercel.chir.in/api/crypto/id?symbol="+coinName)).data[0].id;
     try{
         let cryptodata= new Crypto({
@@ -32,6 +32,7 @@ router.get('/add',async (req,res) =>{
             name,
             amount,
             quantity,
+            currency,
             transactionType
         });
         await cryptodata.save();
@@ -48,10 +49,10 @@ router.get('/add',async (req,res) =>{
 })
 
 router.get('/update',async (req,res) =>{
-    let {_id,coinName,date, amount, quantity, transactionType} = req.query;
+    let {_id,coinName,date, amount, quantity,currency, transactionType} = req.query;
     let name = (await getName("https://moneytracker.vercel.chir.in/api/crypto/id?symbol="+coinName)).data[0].id;
     try{
-        let cryptodata = await Crypto.updateOne({_id:_id},{$set:{coinName:coinName,date:date,name:name,amount:amount,quantity:quantity,transactionType:transactionType}})
+        let cryptodata = await Crypto.updateOne({_id:_id},{$set:{coinName:coinName,date:date,name:name,amount:amount,quantity:quantity,currency:currency,transactionType:transactionType}})
         if(cryptodata){
             return res.status(200).json('Updated');
         }else{

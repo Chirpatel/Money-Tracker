@@ -5,6 +5,7 @@ const Crypto =  new mongoose.Schema({
     name: String,
     amount: Number,
     quantity: Number,
+    currency: String,
     transactionType: String
 });
 

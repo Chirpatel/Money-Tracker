@@ -15,6 +15,9 @@ const mapCryptoData = async (data,names) => {
     return response
 }
 
+const filterCryptoList = (data, symbol) => {
+    return data.filter((data) => data.symbol == symbol.toLowerCase())
+}
 
 router.get('/price', async (req, res) => {
     url = "https://api.wazirx.com/api/v2/tickers"
@@ -27,5 +30,14 @@ router.get('/price', async (req, res) => {
     }
 })
 
-
+router.get('/id', async (req, res) => {
+    url = "https://api.coingecko.com/api/v3/coins/list"
+    params = {}
+    try {
+        return await res.status(200).json(filterCryptoList((await getData(url, params)).data, req.query.symbol));
+    } catch (err) {
+        console.error(err);
+        res.status(500).json('Server error');
+    }
+})
 module.exports = router;
