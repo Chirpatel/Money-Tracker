@@ -1,13 +1,16 @@
 const express = require("express");
 const connectDB = require("./config/db");
 const app = express();
-
+const cors = require("cors")
 connectDB();
+
+const corsOptionsDelegate = (req, callback) => {
+  callback(null, { origin: true })
+}
+
+app.use(cors(corsOptionsDelegate));
+
 app.use(express.json({ extend: false }));
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  next();
-});
 app.get("/", function(req, res, next) {
   res.json({ message: "alive" });
 });
