@@ -9,43 +9,23 @@ const getData = async (url, params) => {
     })
 }
 
-const mapCryptoData = (data) => {
+const mapCryptoData = async (data,names) => {
     response={}
-    data.map((data) => { response[data.id]=data.current_price;  })
+    await names.split(',').map((name) => { response[name]=data[name].sell;})
     return response
 }
 
-const filterCryptoList = (data, symbol) => {
-    return data.filter((data) => data.symbol == symbol.toLowerCase())
-}
 
 router.get('/price', async (req, res) => {
-    url = "https://api.coingecko.com/api/v3/coins/markets"
-    params = {
-        vs_currency: "inr",
-        ids: req.query.ids,
-        order: "market_cap_desc",
-        per_page: req.query.per_page,
-        page: req.query.page,
-        sparkline: "false"
-    }
+    url = "https://api.wazirx.com/api/v2/tickers"
+    params = {}
     try {
-        return await res.status(200).json(mapCryptoData((await getData(url, params)).data));
+        return await res.status(200).json(await mapCryptoData((await getData(url, params)).data,req.query.list));
     } catch (err) {
         console.error(err);
         res.status(500).json('Server error');
     }
 })
 
-router.get('/id', async (req, res) => {
-    url = "https://api.coingecko.com/api/v3/coins/list"
-    params = {}
-    try {
-        return await res.status(200).json(filterCryptoList((await getData(url, params)).data, req.query.symbol));
-    } catch (err) {
-        console.error(err);
-        res.status(500).json('Server error');
-    }
-})
 
 module.exports = router;
