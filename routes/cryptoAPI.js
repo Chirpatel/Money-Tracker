@@ -10,13 +10,9 @@ const getData = async (url, params) => {
 }
 
 const mapCryptoData = (data) => {
-    return data.map((data) => {
-        return {
-            id: data.id,
-            symbol: data.symbol,
-            price: data.current_price
-        }
-    })
+    response={}
+    data.map((data) => { response[data.id]=data.current_price;  })
+    return response
 }
 
 const filterCryptoList = (data, symbol) => {
