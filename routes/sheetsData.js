@@ -1,9 +1,13 @@
-const {json} = require('express');
+const Url = require('./constants');
 const express = require('express');
+const axios = require('axios');
 const {Router} = express;
 const router = Router();
 const {google} = require('googleapis');
 require('dotenv').config();
+
+const getCall = async (url) => {return await axios.get(url)}
+
 let user = 0;
 const client = new google.auth.JWT(
     process.env.google_client_email,
@@ -48,11 +52,11 @@ router.get('/', async (req, res) => {
             version: 'v4',
             auth: client
         });
-        const opt = {
-            spreadsheetId: process.env.google_sheet_id,
+        let sheetId = (await getCall(Url.getSheetId+`?id=`+req.query.sheetId)).data.sheetId;
+        let data = await gsapi.spreadsheets.values.get({
+            spreadsheetId: sheetId,
             range: req.query.range
-        }
-        let data = await gsapi.spreadsheets.values.get(opt)
+        })
         //console.log(data.data.values)
         //console.log(columnMapper(data.data.values,"a,b,c,d,e,f"))
         return res.status(200).json(columnMapper(data.data.values, req.query.columns));
