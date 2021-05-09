@@ -11,7 +11,7 @@ const getData = async (url, params) => {
 
 const mapCryptoData = async (data,names) => {
     response={}
-    await names.split(',').map((name) => { response[name]=data[name].sell;})
+    await names.split(',').map((name) => { if(data[name]) response[name]=data[name].sell;})
     return response
 }
 

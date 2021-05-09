@@ -29,9 +29,9 @@ app.use("/data/sheets", require('./routes/sheetsData'));
 app.use("/data/page/sheetid", require('./routes/sheet'));
 
 
-// app.set('port', process.env.PORT || 3001);
-// console.log("Express server listening on port " + app.get('port'));
-// app.listen(app.get('port'));
+app.set('port', process.env.PORT || 3001);
+console.log("Express server listening on port " + app.get('port'));
+app.listen(app.get('port'));
 
 
 module.exports = app;
